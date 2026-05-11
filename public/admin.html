@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="uz" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin Panel — TireMaster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/css/admin.css" />
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body class="admin-body">
+
+<!-- LOGIN -->
+<div class="a-login-wrap" id="loginView">
+  <div class="a-login-card">
+    <div class="a-login-brand">
+      <div class="a-brand-icon">T</div>
+      <div>
+        <h1 style="font-size: 1.1rem; margin: 0;">TireMaster</h1>
+        <div style="font-size: 0.78rem; color: var(--a-text-muted);">Admin Panel</div>
+      </div>
+    </div>
+    <h1>Kirish</h1>
+    <p class="sub">Boshqaruv paneliga kirish uchun ma'lumotlaringizni kiriting</p>
+    <form id="loginForm">
+      <div class="a-field">
+        <label class="a-label">Foydalanuvchi nomi</label>
+        <input class="a-input" name="username" autocomplete="username" required placeholder="admin" />
+      </div>
+      <div class="a-field">
+        <label class="a-label">Parol</label>
+        <input class="a-input" name="password" type="password" autocomplete="current-password" required placeholder="••••••••" />
+      </div>
+      <button type="submit" class="a-btn a-btn-primary" style="width:100%; justify-content:center; padding: 0.85rem; margin-top: 8px;">
+        <i data-lucide="log-in"></i> Kirish
+      </button>
+      <div class="a-login-err" id="loginErr"></div>
+    </form>
+    <div class="a-login-theme">
+      <span>Mavzu</span>
+      <div class="a-theme-switcher">
+        <button class="a-theme-btn" data-set="light" title="Light"></button>
+        <button class="a-theme-btn" data-set="dark" title="Dark"></button>
+        <button class="a-theme-btn" data-set="apple" title="Apple"></button>
+        <button class="a-theme-btn" data-set="cyberpunk" title="Cyberpunk"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div class="admin-shell" id="adminShell" style="display:none;">
+  <div class="a-sidebar-overlay" id="sidebarOverlay"></div>
+
+  <aside class="a-sidebar">
+    <div class="a-sidebar-brand">
+      <div class="a-brand-icon">T</div>
+      <div class="a-brand-text">
+        <h6>TireMaster</h6>
+        <small>Admin Panel</small>
+      </div>
+    </div>
+
+    <div class="a-sidebar-scroll">
+      <div class="a-sidebar-section">Asosiy</div>
+      <ul class="a-nav">
+        <li class="a-nav-item active" data-view="dashboard">
+          <i data-lucide="layout-dashboard"></i><span class="a-nav-text">Dashboard</span>
+        </li>
+        <li class="a-nav-item" data-view="requests">
+          <i data-lucide="inbox"></i><span class="a-nav-text">So'rovlar</span>
+          <span class="a-nav-badge" id="newBadge" style="display:none">0</span>
+        </li>
+        <li class="a-nav-item" data-view="archive">
+          <i data-lucide="archive"></i><span class="a-nav-text">Arxiv</span>
+        </li>
+      </ul>
+
+      <div class="a-sidebar-section">Kontent</div>
+      <ul class="a-nav">
+        <li class="a-nav-item" data-view="services">
+          <i data-lucide="wrench"></i><span class="a-nav-text">Xizmatlar</span>
+        </li>
+        <li class="a-nav-item" data-view="works">
+          <i data-lucide="image"></i><span class="a-nav-text">Portfolio</span>
+        </li>
+        <li class="a-nav-item" data-view="team">
+          <i data-lucide="users"></i><span class="a-nav-text">Jamoa</span>
+        </li>
+      </ul>
+
+      <div class="a-sidebar-section">Tizim</div>
+      <ul class="a-nav">
+        <li class="a-nav-item" data-view="settings">
+          <i data-lucide="settings"></i><span class="a-nav-text">Sozlamalar</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="a-sidebar-footer">
+      <div class="a-user" id="logoutBtn" title="Chiqish">
+        <div class="a-user-avatar" id="userInitial">A</div>
+        <div class="a-user-info">
+          <div class="a-user-name" id="userLabel">admin</div>
+          <div class="a-user-role">Super Admin</div>
+        </div>
+        <i data-lucide="log-out" class="logout-ic" style="width:16px; height:16px;"></i>
+      </div>
+    </div>
+  </aside>
+
+  <main class="a-main">
+    <div class="a-topbar">
+      <div class="a-topbar-left">
+        <button class="a-mobile-toggle" id="mobileToggle"><i data-lucide="menu"></i></button>
+        <button class="a-collapse-btn" id="collapseBtn" title="Sidebar"><i data-lucide="panel-left"></i></button>
+        <div class="a-page-title" id="pageTitle">Dashboard</div>
+      </div>
+      <div class="a-topbar-right">
+        <div class="a-theme-switcher">
+          <button class="a-theme-btn" data-set="light" title="Light"></button>
+          <button class="a-theme-btn" data-set="dark" title="Dark"></button>
+          <button class="a-theme-btn" data-set="apple" title="Apple"></button>
+          <button class="a-theme-btn" data-set="cyberpunk" title="Cyberpunk"></button>
+        </div>
+        <a href="/" target="_blank" class="a-iconbtn" title="Saytni ko'rish"><i data-lucide="external-link"></i></a>
+      </div>
+    </div>
+
+    <div class="a-content">
+
+      <!-- DASHBOARD -->
+      <section class="a-view active" id="view-dashboard">
+        <div class="a-page-head">
+          <div>
+            <h1>Dashboard</h1>
+            <p>Sayt holati va so'rovlar statistikasi</p>
+          </div>
+        </div>
+
+        <div class="a-stats-grid">
+          <div class="a-stat-card purple a-in a-in-1">
+            <div class="a-stat-icon"><i data-lucide="inbox"></i></div>
+            <div class="a-stat-value" id="stNew">0</div>
+            <div class="a-stat-label">Yangi so'rovlar</div>
+            <div class="a-stat-bg"></div>
+          </div>
+          <div class="a-stat-card green a-in a-in-2">
+            <div class="a-stat-icon"><i data-lucide="check-circle"></i></div>
+            <div class="a-stat-value" id="stContacted">0</div>
+            <div class="a-stat-label">Bog'lanildi</div>
+            <div class="a-stat-bg"></div>
+          </div>
+          <div class="a-stat-card blue a-in a-in-3">
+            <div class="a-stat-icon"><i data-lucide="bar-chart-3"></i></div>
+            <div class="a-stat-value" id="stTotal">0</div>
+            <div class="a-stat-label">Jami so'rovlar</div>
+            <div class="a-stat-bg"></div>
+          </div>
+          <div class="a-stat-card orange a-in a-in-4">
+            <div class="a-stat-icon"><i data-lucide="wrench"></i></div>
+            <div class="a-stat-value" id="stServices">0</div>
+            <div class="a-stat-label">Xizmatlar</div>
+            <div class="a-stat-bg"></div>
+          </div>
+          <div class="a-stat-card red a-in a-in-5">
+            <div class="a-stat-icon"><i data-lucide="users"></i></div>
+            <div class="a-stat-value" id="stTeam">0</div>
+            <div class="a-stat-label">Jamoa</div>
+            <div class="a-stat-bg"></div>
+          </div>
+        </div>
+
+        <div class="a-charts-grid">
+          <div class="a-card a-in a-in-1">
+            <div class="a-card-head">
+              <div>
+                <h3>So'rovlar dinamikasi</h3>
+                <div class="sub">So'nggi 30 kun</div>
+              </div>
+            </div>
+            <div class="a-card-body"><div class="a-chart-wrap"><canvas id="chartByDay"></canvas></div></div>
+          </div>
+          <div class="a-card a-in a-in-2">
+            <div class="a-card-head">
+              <div>
+                <h3>Xizmatlar bo'yicha</h3>
+                <div class="sub">Eng ko'p so'ralganlar</div>
+              </div>
+            </div>
+            <div class="a-card-body"><div class="a-chart-wrap"><canvas id="chartByService"></canvas></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- REQUESTS -->
+      <section class="a-view" id="view-requests">
+        <div class="a-page-head">
+          <div>
+            <h1>So'rovlar</h1>
+            <p>Yangi mijoz so'rovlari — bog'langandan keyin arxivga ko'chiring</p>
+          </div>
+          <div class="a-page-head-actions">
+            <button class="a-btn a-btn-light a-btn-sm" id="refreshRequests"><i data-lucide="refresh-cw"></i> Yangilash</button>
+          </div>
+        </div>
+        <div class="a-card">
+          <div class="a-table-wrap">
+            <table class="a-table" id="requestsTable">
+              <thead><tr>
+                <th>#</th><th>Mijoz</th><th>Telefon</th><th>Xizmat</th><th>Izoh</th><th>Vaqt</th><th style="text-align:right;">Amal</th>
+              </tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="a-empty" id="requestsEmpty" style="display:none;">
+            <i data-lucide="inbox"></i>
+            <p>Hozircha yangi so'rov yo'q</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ARCHIVE -->
+      <section class="a-view" id="view-archive">
+        <div class="a-page-head">
+          <div>
+            <h1>Arxiv</h1>
+            <p>Bog'lanilgan so'rovlar tarixi</p>
+          </div>
+          <div class="a-page-head-actions">
+            <button class="a-btn a-btn-light a-btn-sm" id="refreshArchive"><i data-lucide="refresh-cw"></i> Yangilash</button>
+          </div>
+        </div>
+        <div class="a-card">
+          <div class="a-table-wrap">
+            <table class="a-table" id="archiveTable">
+              <thead><tr>
+                <th>#</th><th>Mijoz</th><th>Telefon</th><th>Xizmat</th><th>Vaqt</th><th style="text-align:right;">Amal</th>
+              </tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="a-empty" id="archiveEmpty" style="display:none;">
+            <i data-lucide="archive"></i>
+            <p>Arxiv bo'sh</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES -->
+      <section class="a-view" id="view-services">
+        <div class="a-page-head">
+          <div><h1>Xizmatlar</h1><p>Sayt bosh sahifasidagi xizmatlar ro'yxati</p></div>
+          <div class="a-page-head-actions">
+            <button class="a-btn a-btn-primary a-btn-sm" onclick="openCrudModal('services')"><i data-lucide="plus"></i> Yangi xizmat</button>
+          </div>
+        </div>
+        <div class="a-card">
+          <div class="a-table-wrap">
+            <table class="a-table" id="servicesTable">
+              <thead><tr>
+                <th>#</th><th>Ikon</th><th>Sarlavha</th><th>Tavsif</th><th>Narx</th><th style="text-align:right;">Amal</th>
+              </tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- WORKS -->
+      <section class="a-view" id="view-works">
+        <div class="a-page-head">
+          <div><h1>Portfolio</h1><p>Qilingan ishlar galereyasi</p></div>
+          <div class="a-page-head-actions">
+            <button class="a-btn a-btn-primary a-btn-sm" onclick="openCrudModal('works')"><i data-lucide="plus"></i> Yangi ish</button>
+          </div>
+        </div>
+        <div class="a-card">
+          <div class="a-table-wrap">
+            <table class="a-table" id="worksTable">
+              <thead><tr>
+                <th>#</th><th>Rasm</th><th>Sarlavha</th><th>Tavsif</th><th style="text-align:right;">Amal</th>
+              </tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TEAM -->
+      <section class="a-view" id="view-team">
+        <div class="a-page-head">
+          <div><h1>Jamoa</h1><p>Jamoa a'zolari ro'yxati</p></div>
+          <div class="a-page-head-actions">
+            <button class="a-btn a-btn-primary a-btn-sm" onclick="openCrudModal('team')"><i data-lucide="plus"></i> Yangi a'zo</button>
+          </div>
+        </div>
+        <div class="a-card">
+          <div class="a-table-wrap">
+            <table class="a-table" id="teamTable">
+              <thead><tr>
+                <th>#</th><th>Foto</th><th>Ism</th><th>Lavozim</th><th>Bio</th><th style="text-align:right;">Amal</th>
+              </tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="a-view" id="view-settings">
+        <div class="a-page-head">
+          <div><h1>Sozlamalar</h1><p>Sayt umumiy ma'lumotlari</p></div>
+        </div>
+        <div class="a-card">
+          <div class="a-card-body">
+            <form id="settingsForm">
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 16px;">Workshop</h3>
+              <div class="a-field-row">
+                <div class="a-field"><label class="a-label">Nomi</label><input class="a-input" name="workshop_name" /></div>
+                <div class="a-field"><label class="a-label">Slogan</label><input class="a-input" name="workshop_tagline" /></div>
+              </div>
+              <div class="a-field"><label class="a-label">Workshop haqida</label><textarea class="a-textarea" name="workshop_about" rows="3"></textarea></div>
+
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin: 24px 0 16px;">Kontakt</h3>
+              <div class="a-field-row">
+                <div class="a-field"><label class="a-label">Telefon</label><input class="a-input" name="phone" /></div>
+                <div class="a-field"><label class="a-label">Email</label><input class="a-input" name="email" /></div>
+              </div>
+              <div class="a-field-row">
+                <div class="a-field"><label class="a-label">Manzil</label><input class="a-input" name="address" /></div>
+                <div class="a-field"><label class="a-label">Ish vaqti</label><input class="a-input" name="working_hours" /></div>
+              </div>
+
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin: 24px 0 16px;">Xarita</h3>
+              <div class="a-field-row" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div class="a-field"><label class="a-label">Latitude</label><input class="a-input" name="map_lat" /></div>
+                <div class="a-field"><label class="a-label">Longitude</label><input class="a-input" name="map_lng" /></div>
+                <div class="a-field"><label class="a-label">Zoom</label><input class="a-input" name="map_zoom" /></div>
+              </div>
+
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin: 24px 0 16px;">Ijtimoiy tarmoqlar</h3>
+              <div class="a-field-row">
+                <div class="a-field"><label class="a-label">Instagram</label><input class="a-input" name="instagram" /></div>
+                <div class="a-field"><label class="a-label">Telegram</label><input class="a-input" name="telegram" /></div>
+              </div>
+              <div class="a-field-row">
+                <div class="a-field"><label class="a-label">Facebook</label><input class="a-input" name="facebook" /></div>
+                <div class="a-field"><label class="a-label">TikTok</label><input class="a-input" name="tiktok" /></div>
+              </div>
+
+              <button type="submit" class="a-btn a-btn-primary" style="margin-top: 12px;">
+                <i data-lucide="save"></i> Saqlash
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="a-modal-backdrop" id="modalBackdrop">
+  <div class="a-modal">
+    <h3 id="modalTitle">—</h3>
+    <form id="crudForm"></form>
+    <div class="a-modal-footer">
+      <button class="a-btn a-btn-light" type="button" id="modalCancel">Bekor qilish</button>
+      <button class="a-btn a-btn-primary" type="button" id="modalSave"><i data-lucide="save"></i> Saqlash</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="a-toast" id="toast">
+  <span class="a-toast-ic" id="toastIcWrap"><i data-lucide="check" id="toastIc"></i></span>
+  <span id="toastMsg"></span>
+</div>
+
+<script src="/js/theme.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>

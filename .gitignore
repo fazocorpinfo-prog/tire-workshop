@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Environment (CONTAINS SECRETS — never commit)
+.env
+.env.local
+.env.*.local
+
+# Database (runtime data)
+database.json
+database.json.tmp
+database.db
+database.db-journal
+database.db-wal
+database.db-shm
+
+# Uploaded files
+uploads/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Claude Code
+.claude/
