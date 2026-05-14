@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Admin Panel — TireMaster</title>
+<title>Admin Panel — RLD Shinomontaj</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -17,9 +17,9 @@
 <div class="a-login-wrap" id="loginView">
   <div class="a-login-card">
     <div class="a-login-brand">
-      <div class="a-brand-icon">T</div>
+      <div class="a-brand-icon">R</div>
       <div>
-        <h1 style="font-size: 1.1rem; margin: 0;">TireMaster</h1>
+        <h1 style="font-size: 1.1rem; margin: 0;">RLD Shinomontaj</h1>
         <div style="font-size: 0.78rem; color: var(--a-text-muted);">Admin Panel</div>
       </div>
     </div>
@@ -57,9 +57,9 @@
 
   <aside class="a-sidebar">
     <div class="a-sidebar-brand">
-      <div class="a-brand-icon">T</div>
+      <div class="a-brand-icon">R</div>
       <div class="a-brand-text">
-        <h6>TireMaster</h6>
+        <h6>RLD Shinomontaj</h6>
         <small>Admin Panel</small>
       </div>
     </div>
@@ -96,6 +96,9 @@
       <ul class="a-nav">
         <li class="a-nav-item" data-view="settings">
           <i data-lucide="settings"></i><span class="a-nav-text">Sozlamalar</span>
+        </li>
+        <li class="a-nav-item" data-view="sitesettings">
+          <i data-lucide="globe"></i><span class="a-nav-text">Sayt sozlamalari</span>
         </li>
       </ul>
     </div>
@@ -310,14 +313,71 @@
         </div>
       </section>
 
-      <!-- SETTINGS -->
+      <!-- SETTINGS — link-in-bio bosh sahifa -->
       <section class="a-view" id="view-settings">
         <div class="a-page-head">
-          <div><h1>Sozlamalar</h1><p>Sayt umumiy ma'lumotlari</p></div>
+          <div><h1>Sozlamalar</h1><p>Bosh sahifa (link-in-bio) ma'lumotlari</p></div>
+          <div class="a-page-head-actions">
+            <a href="/" target="_blank" class="a-btn a-btn-light a-btn-sm"><i data-lucide="external-link"></i> Sahifani ko'rish</a>
+          </div>
         </div>
         <div class="a-card">
           <div class="a-card-body">
             <form id="settingsForm">
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 16px;">Profil</h3>
+              <div class="a-field"><label class="a-label">Avatar / Logo URL</label><input class="a-input" name="logo_url" placeholder="https://..." /></div>
+              <div class="a-field"><label class="a-label">Nomi</label><input class="a-input" name="profile_name" /></div>
+              <div class="a-field"><label class="a-label">Tavsif</label><textarea class="a-textarea" name="profile_bio" rows="2"></textarea></div>
+
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin: 24px 0 16px;">Havolalar</h3>
+              <div class="a-field-row">
+                <div class="a-field"><label class="a-label">Telefon</label><input class="a-input" name="phone" placeholder="+998 .." /></div>
+                <div class="a-field"><label class="a-label">Telegram</label><input class="a-input" name="telegram" placeholder="https://t.me/.." /></div>
+              </div>
+              <div class="a-field-row">
+                <div class="a-field"><label class="a-label">Instagram</label><input class="a-input" name="instagram" placeholder="https://instagram.com/.." /></div>
+                <div class="a-field"><label class="a-label">Facebook</label><input class="a-input" name="facebook" placeholder="https://facebook.com/.." /></div>
+              </div>
+              <div class="a-field-row">
+                <div class="a-field"><label class="a-label">TikTok</label><input class="a-input" name="tiktok" placeholder="https://tiktok.com/.." /></div>
+                <div class="a-field"><label class="a-label">Manzil (xarita havolasi)</label><input class="a-input" name="map_url" placeholder="https://yandex.uz/maps/.." /></div>
+              </div>
+              <div class="a-field"><label class="a-label">Rasmiy sayt havolasi</label><input class="a-input" name="website_url" placeholder="/site" /></div>
+
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin: 24px 0 16px;">Tugma yozuvlari</h3>
+              <div class="a-field-row">
+                <div class="a-field"><label class="a-label">Telefon</label><input class="a-input" name="label_phone" /></div>
+                <div class="a-field"><label class="a-label">Telegram</label><input class="a-input" name="label_telegram" /></div>
+              </div>
+              <div class="a-field-row">
+                <div class="a-field"><label class="a-label">Instagram</label><input class="a-input" name="label_instagram" /></div>
+                <div class="a-field"><label class="a-label">Facebook</label><input class="a-input" name="label_facebook" /></div>
+              </div>
+              <div class="a-field-row">
+                <div class="a-field"><label class="a-label">TikTok</label><input class="a-input" name="label_tiktok" /></div>
+                <div class="a-field"><label class="a-label">Manzil</label><input class="a-input" name="label_map" /></div>
+              </div>
+              <div class="a-field"><label class="a-label">Rasmiy sayt</label><input class="a-input" name="label_website" /></div>
+
+              <button type="submit" class="a-btn a-btn-primary" style="margin-top: 12px;">
+                <i data-lucide="save"></i> Saqlash
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- SITE SETTINGS — to'liq website (/site) -->
+      <section class="a-view" id="view-sitesettings">
+        <div class="a-page-head">
+          <div><h1>Sayt sozlamalari</h1><p>To'liq website (/site) umumiy ma'lumotlari</p></div>
+          <div class="a-page-head-actions">
+            <a href="/site" target="_blank" class="a-btn a-btn-light a-btn-sm"><i data-lucide="external-link"></i> Saytni ko'rish</a>
+          </div>
+        </div>
+        <div class="a-card">
+          <div class="a-card-body">
+            <form id="siteSettingsForm">
               <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 16px;">Workshop</h3>
               <div class="a-field-row">
                 <div class="a-field"><label class="a-label">Nomi</label><input class="a-input" name="workshop_name" /></div>

@@ -13,6 +13,7 @@ const defaultData = {
   works: [],
   team: [],
   settings: {},
+  site_settings: {},
   _counters: { requests: 0, services: 0, works: 0, team: 0, admins: 0 }
 };
 
@@ -94,10 +95,17 @@ const api = {
     return data[collection].filter(predicate).length;
   },
 
-  // Settings (key-value)
+  // Settings (key-value) — link-in-bio homepage
   getSettings() { return { ...data.settings }; },
   setSettings(updates) {
     for (const [k, v] of Object.entries(updates)) data.settings[k] = String(v ?? '');
+    scheduleSave();
+  },
+
+  // Site settings (key-value) — full website at /site
+  getSiteSettings() { return { ...data.site_settings }; },
+  setSiteSettings(updates) {
+    for (const [k, v] of Object.entries(updates)) data.site_settings[k] = String(v ?? '');
     scheduleSave();
   },
 

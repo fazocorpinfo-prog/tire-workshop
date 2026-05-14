@@ -25,7 +25,7 @@
     return `<svg viewBox="0 0 24 24"><use href="#i-tire"/></svg>`;
   }
 
-  const r = await fetch('/api/public/data');
+  const r = await fetch('/api/public/site-data');
   const { settings, services, works, team } = await r.json();
 
   document.querySelectorAll('[data-key]').forEach(el => {

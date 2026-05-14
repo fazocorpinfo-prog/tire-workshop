@@ -96,7 +96,8 @@ $$('.a-nav-item').forEach(a => a.addEventListener('click', () => switchView(a.da
 
 const viewTitles = {
   dashboard: 'Dashboard', requests: "So'rovlar", archive: 'Arxiv',
-  services: 'Xizmatlar', works: 'Portfolio', team: 'Jamoa', settings: 'Sozlamalar'
+  services: 'Xizmatlar', works: 'Portfolio', team: 'Jamoa',
+  settings: 'Sozlamalar', sitesettings: 'Sayt sozlamalari'
 };
 
 function switchView(name) {
@@ -113,6 +114,7 @@ function switchView(name) {
   if (name === 'works') loadList('works');
   if (name === 'team') loadList('team');
   if (name === 'settings') loadSettings();
+  if (name === 'sitesettings') loadSiteSettings();
 }
 
 // Sidebar collapse / mobile
@@ -489,6 +491,24 @@ $('#settingsForm').addEventListener('submit', async (e) => {
   const fd = new FormData(e.target);
   try {
     await api('/api/admin/settings', { method: 'PUT', body: JSON.stringify(Object.fromEntries(fd)) });
+    toast('Saqlandi');
+  } catch (err) { toast(err.message, 'error'); }
+});
+
+// ============ SITE SETTINGS (full website) ============
+async function loadSiteSettings() {
+  const s = await api('/api/admin/site-settings');
+  const form = $('#siteSettingsForm');
+  for (const [k, v] of Object.entries(s)) {
+    const el = form.querySelector(`[name="${k}"]`);
+    if (el) el.value = v;
+  }
+}
+$('#siteSettingsForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  try {
+    await api('/api/admin/site-settings', { method: 'PUT', body: JSON.stringify(Object.fromEntries(fd)) });
     toast('Saqlandi');
   } catch (err) { toast(err.message, 'error'); }
 });

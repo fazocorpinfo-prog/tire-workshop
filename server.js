@@ -19,22 +19,51 @@ if (!db.findOne('admins', a => a.username === defaultUser)) {
 }
 
 // === Seed default data ===
-if (Object.keys(db.getSettings()).length === 0) {
+// Full website settings (served at /site). Migrate from old `settings` if present.
+if (Object.keys(db.getSiteSettings()).length === 0) {
+  const old = db.getSettings();
+  if (old.workshop_name) {
+    db.setSiteSettings(old);
+  } else {
+    db.setSiteSettings({
+      workshop_name: 'RLD Shinomontaj',
+      workshop_tagline: 'Professional shinamontaj xizmati',
+      workshop_about: 'Gijduvonda joylashgan shinamontaj xizmati. Yuqori sifatli xizmat va zamonaviy uskunalar bilan ishlaymiz.',
+      address: 'Gijduvon, Buxoro viloyati',
+      phone: '+998 91 310 56 00',
+      email: '',
+      working_hours: '09:00 - 21:00 (har kuni)',
+      instagram: 'https://www.instagram.com/rld_shinomontaj?igsh=N3U1ODBqczdpZmxm&utm_source=qr',
+      telegram: 'https://t.me/RLD_shinomontaj_gijduvon',
+      facebook: 'https://www.facebook.com/share/1PLNLdHya1/?mibextid=wwXIfr',
+      tiktok: 'https://www.tiktok.com/@rldshinamontaj?_r=1&_t=ZS-93Zq33YLvHk',
+      map_lat: '40.089358',
+      map_lng: '64.683080',
+      map_zoom: '16'
+    });
+  }
+}
+
+// Link-in-bio homepage settings (served at /).
+if (!db.getSettings().logo_url) {
   db.setSettings({
-    workshop_name: 'TireMaster Pro',
-    workshop_tagline: 'Professional shinamontaj xizmati',
-    workshop_about: 'Bizning tire workshop 10 yildan ortiq tajribaga ega. Yuqori sifatli xizmat va zamonaviy uskunalar bilan ishlaymiz.',
-    address: 'Toshkent shahri, Yunusobod tumani, Amir Temur ko\'chasi 1',
-    phone: '+998 90 123 45 67',
-    email: 'info@tiremaster.uz',
-    working_hours: '09:00 - 21:00 (har kuni)',
-    instagram: 'https://instagram.com/',
-    telegram: 'https://t.me/',
-    facebook: 'https://facebook.com/',
-    tiktok: 'https://tiktok.com/',
-    map_lat: '41.3111',
-    map_lng: '69.2797',
-    map_zoom: '15'
+    logo_url: 'https://api.mylink.asia/media/logos/XL.png',
+    profile_name: 'RLD shinomontaj',
+    profile_bio: 'Shinamontaj xizmati — Gijduvon',
+    phone: '+998 91 310 56 00',
+    telegram: 'https://t.me/RLD_shinomontaj_gijduvon',
+    instagram: 'https://www.instagram.com/rld_shinomontaj?igsh=N3U1ODBqczdpZmxm&utm_source=qr',
+    facebook: 'https://www.facebook.com/share/1PLNLdHya1/?mibextid=wwXIfr',
+    tiktok: 'https://www.tiktok.com/@rldshinamontaj?_r=1&_t=ZS-93Zq33YLvHk',
+    map_url: 'https://yandex.uz/maps/org/rld/72141770229/?ll=64.683080%2C40.089358&z=16',
+    website_url: '/site',
+    label_phone: 'Telefon',
+    label_telegram: 'Telegram',
+    label_instagram: 'Instagram',
+    label_facebook: 'Facebook',
+    label_tiktok: 'TikTok',
+    label_map: 'Manzil — Gijduvon',
+    label_website: 'Rasmiy sayt'
   });
 }
 
@@ -249,8 +278,12 @@ tgInit();
 
 // === Public API ===
 app.get('/api/public/data', (req, res) => {
+  res.json({ settings: db.getSettings() });
+});
+
+app.get('/api/public/site-data', (req, res) => {
   res.json({
-    settings: db.getSettings(),
+    settings: db.getSiteSettings(),
     services: db.sorted('services'),
     works: db.sorted('works'),
     team: db.sorted('team')
@@ -355,12 +388,21 @@ crud('services', ['title', 'description', 'icon', 'price', 'order_index']);
 crud('works', ['title', 'description', 'image_url', 'order_index']);
 crud('team', ['name', 'position', 'photo_url', 'bio', 'order_index']);
 
-// === Settings ===
+// === Settings (link-in-bio homepage) ===
 app.get('/api/admin/settings', requireAuth, (req, res) => {
   res.json(db.getSettings());
 });
 app.put('/api/admin/settings', requireAuth, (req, res) => {
   db.setSettings(req.body || {});
+  res.json({ ok: true });
+});
+
+// === Site settings (full website) ===
+app.get('/api/admin/site-settings', requireAuth, (req, res) => {
+  res.json(db.getSiteSettings());
+});
+app.put('/api/admin/site-settings', requireAuth, (req, res) => {
+  db.setSiteSettings(req.body || {});
   res.json({ ok: true });
 });
 
@@ -386,6 +428,7 @@ app.post('/api/admin/upload', requireAuth, upload.single('file'), (req, res) => 
   res.json({ url: '/uploads/' + req.file.filename });
 });
 
+app.get('/site', (req, res) => res.sendFile(path.join(__dirname, 'public', 'site.html')));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
 app.listen(PORT, () => {
